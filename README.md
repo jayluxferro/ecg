@@ -1,5 +1,5 @@
 ### Go API Package for ECG Power App
-The following environment variables need to be set. Replace the `**username**` and `**password**` with your email address and password. You can sign up using:<br/>
+The following environment variables need to be set. Replace the `username` and `password` with your email address and password. You can sign up using:<br/>
 **iOS** - https://apple.co/2Hq7skc <br/>
 **Android** - https://play.google.com/store/apps/details?id=com.ecgmobile
 
