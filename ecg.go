@@ -213,6 +213,59 @@ func makePayment(token *string, meterInfo *MeterInfo, params *Params) (error, st
   return apiRequest(params.ApiURL + "prepaid/makepayment", "POST", headers, payload)
 }
 
+func SendOTP(params *Params) bool {
+  err, token := getToken(params) 
+  if err != nil {
+    return false
+  }
+  
+  headers := map[string]string{}
+  headers["Content-Type"] = "application/json"
+  headers["Authorization"] = "Bearer " + token
+
+  payload := strings.NewReader(`{
+    "phoneNumber": "` + params.MomoNumber + `"
+  }`)
+
+  err, res := apiRequest(params.ApiURL + "v2/phonenumber/sendotp", "POST", headers, payload)
+  if err != nil {
+    return false
+  }
+
+  if strings.Contains(res, "success") {
+    return true
+  }
+
+  return false
+}
+
+func VerifyOTP(params *Params, otp string) bool {
+  err, token := getToken(params) 
+  if err != nil {
+    return false
+  }
+  
+  headers := map[string]string{}
+  headers["Content-Type"] = "application/json"
+  headers["Authorization"] = "Bearer " + token
+
+  payload := strings.NewReader(`{
+    "phoneNumber": "` + params.MomoNumber + `",
+    "Code": "` + otp + `"
+  }`)
+
+  err, res := apiRequest(params.ApiURL + "v2/phonenumber/register", "POST", headers, payload)
+  if err != nil {
+    return false
+  }
+
+  if strings.Contains(res, "success") || strings.Contains(res, "re-register"){
+    return true
+  }
+
+  return false
+}
+
 func InitMakePayment(params *Params) string {
   err, token := getToken(params)
  
